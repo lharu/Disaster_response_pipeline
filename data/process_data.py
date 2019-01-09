@@ -7,7 +7,17 @@ import sys
 
 
 def load_data(messages_filepath, categories_filepath):
-    '''load data'''
+    '''load data - two csv files
+    Parameters
+    ----------
+    messages_filepath : string
+        location of the messages csv file
+    categories_filepath : string
+        location of the categories csv file
+    Returns
+    -------
+    df - pandas.DataFrame
+    '''
     messages = pd.read_csv(messages_filepath)
     categories = pd.read_csv(categories_filepath)
     # merge data
@@ -16,6 +26,18 @@ def load_data(messages_filepath, categories_filepath):
 
 
 def clean_data(df):
+    """
+    Clean up the dataframe
+    
+    Parameters
+    ----------
+    df: pandas.DataFrame
+ 
+    Returns
+    -------
+    df - pandas.DataFrame
+        The processed dataframe
+    """
     # Split categories into separate category columns.
     categories = df.categories.str.split(pat = ';', expand=True)
     row = categories.iloc[0]
@@ -43,7 +65,16 @@ def clean_data(df):
 
 
 def save_data(df, database_filename):
-    '''Save the clean dataset into an sqlite database'''
+    '''Save the clean dataset into an sqlite database
+    
+    Parameters
+    ----------
+    df: pandas.DataFrame
+    database_filename: string
+    Returns
+    -------
+    None
+    '''
     engine = create_engine('sqlite:///' + database_filename)
     df.to_sql('processed_data', engine, index=False) 
   
