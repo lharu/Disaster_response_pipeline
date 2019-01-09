@@ -21,7 +21,18 @@ from sqlalchemy import create_engine
 
 
 def load_data(database_filepath):
-    '''load data from database'''
+    '''load data from database
+    
+    Parameters
+    ----------
+    database_filepath : string
+        
+    Returns
+    -------
+    X: np.ndarray
+    Y: np.ndarray
+    category_names: list
+     '''
     engine = create_engine('sqlite:///' + database_filepath)
     df = pd.read_sql_table('processed_data', engine)
     df = df.dropna() 
@@ -32,6 +43,16 @@ def load_data(database_filepath):
 
 
 def tokenize(text):
+     '''Tokenize the text
+    
+    Parameters
+    ----------
+    text : string
+  
+    Returns
+    -------
+    clean_tokens : list
+    '''
     tokens = word_tokenize(text)
     lemmatizer = WordNetLemmatizer()
 
@@ -44,7 +65,16 @@ def tokenize(text):
 
 
 def build_model():
-    '''Build a machine learning pipeline'''
+    '''Build a machine learning pipeline
+    
+    Parameters
+    ----------
+    None
+    
+    Returns
+    -------
+    None
+    '''
     pipeline = Pipeline([
         ('vect', CountVectorizer(tokenizer=tokenize)), 
         ('tfidf', TfidfTransformer()),
@@ -65,7 +95,22 @@ def build_model():
 
 
 def evaluate_model(model, X_test, Y_test, category_names):
-    '''Test your model'''
+    '''Test the model performance
+    
+    Parameters
+    ----------
+    model : multiclassification model
+    X_test: numpy.ndarray
+        The test data
+    Y_test: numpy.ndarray
+        The test category
+    category_names: list
+     The category names
+     
+    Returns
+    -------
+    None
+    '''
     Y_pred = model.predict(X_test)
     
     for i in range(36):
@@ -75,7 +120,20 @@ def evaluate_model(model, X_test, Y_test, category_names):
 
 
 def save_model(model, model_filepath):
-    ''' Save model in pickle format'''
+    ''' Save model in pickle format
+    
+    Parameters
+    ----------
+    model : a multiclassification model
+        The optimized classifier
+    model_filepath : string
+        the database location
+    
+    Returns
+    -------
+    None
+
+    '''
     pickle.dump(model, open(model_filepath, "wb"))
 
 

@@ -16,6 +16,16 @@ from plotly.graph_objs import Bar, Heatmap
 app = Flask(__name__)
 
 def tokenize(text):
+    ''' Tokenize the text
+    
+    Parameters
+    ----------
+    text : String
+        The input text
+    Returns
+    -------
+    clean_tokens: tokenized text
+    '''
     tokens = word_tokenize(text)
     lemmatizer = WordNetLemmatizer()
 
@@ -38,6 +48,16 @@ model = joblib.load("../models/classifier.pkl")
 @app.route('/')
 @app.route('/index')
 def index():
+    '''create plot for visualization
+    
+    Parameters
+    ----------
+    None
+    
+    Returns
+    -------
+    None
+    '''
     
     # extract data needed for visuals
     # TODO: Below is an example - modify to extract data for your own visuals
